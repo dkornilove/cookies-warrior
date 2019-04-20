@@ -2,7 +2,7 @@ import dialogs from './data/dialogs';
 import factory from './entities';
 import difficulties from './data/difficulties';
 
-const onGameStart = () => {
+const greetings = () => {
   const moods = Object.keys(difficulties);
   const name = dialogs.askName();
   dialogs.greetings(name);
@@ -11,15 +11,38 @@ const onGameStart = () => {
     dialogs.bye();
     return null;
   }
-  dialogs.preStart(moods[index], name);
+  const mood = moods[index];
+  dialogs.preStart(mood, name);
 
-  return { name, difficulty: moods[index] };
+  return {
+    name,
+    difficulty: difficulties[mood],
+  };
+};
+
+const nextStage = (player) => {
+  const stage = factory.createStage(player);
+  const result = stage.start();
+  switch (result.message) {
+    case 'dead':
+      dialogs.dead(player);
+      break;
+    case 'passed':
+      nextStage(result.player);
+      break;
+    case 'aborted':
+      dialogs.bye();
+      break;
+    default:
+      dialogs.wrong();
+  }
 };
 
 export default () => {
-  const state = onGameStart();
-  if (!state) {
+  const settings = greetings();
+  if (!settings) {
     return;
   }
-  factory.createPlayer(state);
+  const player = factory.createPlayer(settings);
+  nextStage(player);
 };

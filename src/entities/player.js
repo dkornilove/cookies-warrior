@@ -1,16 +1,19 @@
 export default class Player {
   constructor(params) {
     const {
-      name, hp, resistance, basicAttack, cookies, container,
+      name, cookiesContainer, difficulty,
     } = params;
     this.name = name;
-    this.hp = hp;
+    this.hp = 100 / difficulty.multiplier;
     this.defense = 0;
-    this.resistance = resistance;
-    this.basicAttack = basicAttack;
-    this.nextAttack = basicAttack;
-    this.cookiesPerMove = cookies;
-    this.cookiesContainer = container;
+    this.resistance = 0;
+    this.basicAttack = 10 / difficulty.multiplier;
+    this.nextAttack = this.basicAttack;
+    this.cookiesPerMove = difficulty.cookies;
+    this.cookiesContainer = cookiesContainer;
     this.artefacts = [];
+    this.difficulty = difficulty;
+    this.currentlevel = 1;
+    this.score = 0;
   }
 }
