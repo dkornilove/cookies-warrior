@@ -22,7 +22,8 @@ const greetings = () => {
 
 const nextStage = (player) => {
   const stage = factory.createStage(player);
-  const result = stage.start();
+  dialogs.startStage(stage);
+  const result = processStage(stage);
   switch (result.message) {
     case 'dead':
       dialogs.dead(player);
@@ -36,6 +37,27 @@ const nextStage = (player) => {
     default:
       dialogs.wrong();
   }
+};
+
+const processStage = (stage) => {
+  const stats = stage.calculateModifiers();
+  dialogs.moveInfo(stats);
+  const cookies = stage.getCookies();
+  const processCookies = (cookies) => {
+    if (!cookies) {
+      return;
+    }
+    index = dialogs.offerCookies(cookies);
+    stage.addModifier(cookies[index]);
+    if (index === -1) {
+      return;
+    }
+    const newCoockies = stage.getCookies();
+    processCookies(newCoockies);
+  };
+  processCookies(cookies);
+  const result = stage.applyModifiers();
+  return result || processStage(stage);
 };
 
 export default () => {
