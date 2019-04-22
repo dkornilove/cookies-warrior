@@ -16,22 +16,38 @@ export default class Player {
     // eslint-disable-next-line no-underscore-dangle
     this._fsm();
   }
+
+  getCookies() {
+    return [...new Array(this.cookiesPerMove)]
+      .map(() => this.cookiesContainer[Math.floor(Math.random() * this.cookiesContainer.length)]);
+  }
+
+  getModifiers() {
+    return this.artefacts.map(([, ...modifier]) => modifier);
+  }
+
+  getStats() {
+    return {
+      hp: this.hp,
+      def: this.defense,
+      res: this.resistance,
+      attack: this.attack,
+    };
+  }
 }
 
 StateMachine.factory(Player, {
   init: 'init',
   transitions: [
-    { name: 'equip', from: 'init', to: 'equipped' },
-    { name: 'patch', from: ['equipped', 'patched'], to: 'patched' },
-    { name: 'bust', from: 'patched', to: 'busted' },
-    { name: 'normalize', from: 'busted', to: 'patched' },
+    { name: 'patch', from: ['init', 'patched'], to: 'patched' },
+    { name: 'boost', from: 'patched', to: 'boosted' },
+    { name: 'normalize', from: 'boosted', to: 'patched' },
     { name: 'reset', from: 'patched', to: 'init' },
   ],
   methods: {
-    onEquip: () => {},
-    onPatch: () => {},
+    onPatch: ({ fsm: player }, { player: modifiers }) => {},
     onBust: () => {},
-    onReset: () => {},
     onNormalize: () => {},
+    onReset: () => {},
   },
 });

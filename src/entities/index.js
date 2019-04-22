@@ -1,8 +1,6 @@
 import _ from 'lodash';
 import entities from '../data/entities';
 import Player from './player';
-import Cookie from './cookie';
-import MonsterSpell from './monster-spell';
 import Monster from './monster';
 import Environment from './environment';
 import Stage from './stage';
@@ -22,16 +20,12 @@ const pickRandomEntity = (repository) => {
   return pickRecursively();
 };
 
-export const createCookie = () => {
-  const params = pickRandomEntity('cookies');
-  const cookie = new Cookie(params);
-  return cookie;
-};
+export const createModifier = repository => pickRandomEntity(repository);
 
 export const createCookiesContainer = (count) => {
   const cookiesContainer = [];
   for (let i = 0; i < count; i += 1) {
-    const newCookie = createCookie();
+    const newCookie = createModifier('cookies');
     cookiesContainer.push(newCookie);
   }
 };
@@ -41,16 +35,10 @@ export const createPlayer = ({ name, difficulty }) => {
   return new Player({ name, difficulty, cookiesContainer });
 };
 
-export const createMonsterSpell = () => {
-  const params = pickRandomEntity('spells');
-  const spell = new MonsterSpell(params);
-  return spell;
-};
-
 export const createSpellContainer = () => {
   const spellContainer = [];
   for (let i = 0; i < 3; i += 1) {
-    const newSpell = createMonsterSpell();
+    const newSpell = createModifier('spells');
     spellContainer.push(newSpell);
   }
 };

@@ -1,8 +1,8 @@
 // name, target, attribute, value, rarity
 const cookies = [
-  ['Sugar cookie', 'player', 'attack', +3, 1],
-  ['Chocolate cookie', 'player', 'defense', +5, 1],
-  ['Honey cookie', 'monster', 'defense', -5, 1],
+  ['Sugar cookie', '+3 damage until end of turn', 'player', 'attack', +3, 1],
+  ['Chocolate cookie', '+5 defense until end of turn', 'player', 'defense', +5, 1],
+  ['Honey cookie', '-5 defense to monster until end of turn', 'monster', 'defense', -5, 1],
   ['Sugar Milk cookie', 'env', 'attack', +1, 0.9],
 ];
 
@@ -24,8 +24,8 @@ const environments = [
 ];
 
 const artefacts = [
-  ['Stick of the truth', 'player', 'attack', +1],
-  ['Belt of the giant strength', 'player', 'defence', +1],
+  ['Stick of the truth', 'player', 'attack', +1, 1],
+  ['Belt of the giant strength', 'player', 'defence', +1, 1],
 ];
 
 export default {

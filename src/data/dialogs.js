@@ -16,4 +16,5 @@ export default {
   startStage: stage => ask(`You come to ${stage.name} and fase ${stage.monster.name}`),
   moveInfo: stats => ask(`You ${stats.player} are going to deal ${stats.plrdmg} damage
          to monster ${stats.monster} that plans to ${stats.monsterplan}`),
+  offerCookies: () => {},
 };
