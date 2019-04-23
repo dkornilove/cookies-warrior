@@ -3,14 +3,11 @@ export default class Stage {
     this.player = player;
     this.monster = monster;
     this.env = env;
-    this.modifiers = {
-      player: [],
-      monster: [],
-    };
-    this.boosters = {
-      player: [],
-      monster: [],
-    };
+  }
+
+  initialize() {
+    this.player.getModifiers().forEach(this.applyModifier);
+    return this.getStats();
   }
 
   getCookies(index) {
@@ -18,13 +15,14 @@ export default class Stage {
     if (!memo) {
       memo = this.player.getCookies();
     } else {
-      // extract from memo
+      memo.splice(index, 1);
     }
     return memo;
   }
 
   applyModifier(modifier) {
-
+    const [[name, description], settings] = modifier;
+    settings.forEach(([method, target, attribute, value]) => this[target][method](attribute, value));
   }
 
   getStats() {
@@ -40,26 +38,5 @@ export default class Stage {
       monster,
       monsterplan: this.monster.getPlan(mnstrDmg),
     };
-  }
-
-  // ['player', 'attribute', 'value']
-  sortModifier(modifier) {
-    const [target, ...rest] = modifier;
-    this.modifiers[target].push(rest);
-  }
-
-  initialize() {
-    this.player.getModifiers().forEach(this.sortModifier);
-    this.player.patch(this.modifiers);
-    this.monster.patch(this.modifiers);
-    return this.getStats();
-  }
-
-  patch(modifier) {
-
-  }
-
-  boost(modifier) {
-
   }
 }

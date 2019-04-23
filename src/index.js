@@ -40,27 +40,32 @@ const nextStage = (player) => {
 };
 
 const processStage = (stage) => {
-  const stats = stage.initialize();
-  const move = () => {
+  const startStats = stage.initialize();
+
+  const nextMove = (stats) => {
     dialogs.moveInfo(stats);
     const container = stage.getCookies();
+
     const offerCookies = (cookies) => {
       const meta = cookies.map(([name, description]) => ({ name, description }));
-      if (!cookies) {
+      if (cookies.length === 0) {
         return;
       }
       const index = dialogs.offerCookies(meta);
-      stage.applyModifier(cookies[index]);
+      stage.addModifier(cookies[index]);
       if (index === -1) {
         return;
       }
-      const newCoockies = stage.getCookies(index);
-      offerCookies(newCoockies);
+      const rest = stage.getCookies(index);
+      dialogs.moveInfo(stage.getStats());
+      offerCookies(rest);
     };
+
     offerCookies(container);
-    const result = stage.completeMove();
+    const result = stage.endMove();
   };
-  return result || processStage(stage);
+
+  return nextMove(startStats);
 };
 
 export default () => {

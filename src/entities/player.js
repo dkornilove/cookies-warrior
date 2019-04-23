@@ -9,12 +9,12 @@ export default class Player {
     this.attack = 0;
     this.cookiesPerMove = difficulty.cookies;
     this.cookiesContainer = cookiesContainer;
-    this.artefacts = [];
     this.difficulty = difficulty;
     this.currentlevel = 1;
-    this.score = 0;
-    // eslint-disable-next-line no-underscore-dangle
-    this._fsm();
+
+    this.artefacts = [];
+    this.patch = [];
+    this.boost = [];
   }
 
   getCookies() {
@@ -34,20 +34,16 @@ export default class Player {
       attack: this.attack,
     };
   }
-}
 
-StateMachine.factory(Player, {
-  init: 'init',
-  transitions: [
-    { name: 'patch', from: ['init', 'patched'], to: 'patched' },
-    { name: 'boost', from: 'patched', to: 'boosted' },
-    { name: 'normalize', from: 'boosted', to: 'patched' },
-    { name: 'reset', from: 'patched', to: 'init' },
-  ],
-  methods: {
-    onPatch: ({ fsm: player }, { player: modifiers }) => {},
-    onBust: () => {},
-    onNormalize: () => {},
-    onReset: () => {},
-  },
-});
+  apply(method, attribute, value) {
+    this[attribute] += value;
+    this[method].push([[attribute, -value]]);
+  }
+
+  reset(method) {
+    this[method].forEach(([attribute, value]) => {
+      this[attribute] += value;
+    });
+    this[method] = [];
+  }
+}
