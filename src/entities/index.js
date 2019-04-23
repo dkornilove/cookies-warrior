@@ -2,7 +2,6 @@ import _ from 'lodash';
 import entities from '../data/entities';
 import Player from './player';
 import Monster from './monster';
-import Environment from './environment';
 import Stage from './stage';
 
 const pickRandomEntity = (repository) => {
@@ -20,9 +19,9 @@ const pickRandomEntity = (repository) => {
   return pickRecursively();
 };
 
-export const createModifier = repository => pickRandomEntity(repository);
+const createModifier = repository => _.initial(pickRandomEntity(repository));
 
-export const createCookiesContainer = (count) => {
+const createCookiesContainer = (count) => {
   const cookiesContainer = [];
   for (let i = 0; i < count; i += 1) {
     const newCookie = createModifier('cookies');
@@ -30,12 +29,12 @@ export const createCookiesContainer = (count) => {
   }
 };
 
-export const createPlayer = ({ name, difficulty }) => {
+const createPlayer = ({ name, difficulty }) => {
   const cookiesContainer = createCookiesContainer(difficulty.cookiesCount);
   return new Player({ name, difficulty, cookiesContainer });
 };
 
-export const createSpellContainer = () => {
+const createSpellContainer = () => {
   const spellContainer = [];
   for (let i = 0; i < 3; i += 1) {
     const newSpell = createModifier('spells');
@@ -43,19 +42,18 @@ export const createSpellContainer = () => {
   }
 };
 
-export const createMonster = (difficulty) => {
+const createMonster = (difficulty) => {
   const params = pickRandomEntity('monsters');
   const spells = createSpellContainer();
   return new Monster(params, spells, difficulty.multiplier);
 };
 
-export const createEnvironment = () => {
-  const params = pickRandomEntity('environments');
-  return new Environment(params);
+const createStage = (player) => {
+  const monster = createMonster(player.difficulty);
+  return new Stage(player, monster, createModifier('environments'));
 };
 
-export const createStage = (player) => {
-  const monster = createMonster(player.difficulty);
-  const env = createEnvironment();
-  return new Stage(player, monster, env);
+export default {
+  createPlayer,
+  createStage,
 };

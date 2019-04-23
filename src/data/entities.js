@@ -1,15 +1,15 @@
 // name, target, attribute, value, rarity
 const cookies = [
-  ['Sugar cookie', '+3 damage until end of turn', 'player', 'attack', +3, 1],
+  [['Sugar cookie', '+3 damage until end of turn'], [['patch', 'player', 'attack', +3], ['patch', 'player', 'defense', +3]], 1],
   ['Chocolate cookie', '+5 defense until end of turn', 'player', 'defense', +5, 1],
   ['Honey cookie', '-5 defense to monster until end of turn', 'monster', 'defense', -5, 1],
   ['Sugar Milk cookie', 'env', 'attack', +1, 0.9],
 ];
 
-// name, hp, defense, resistance, rarity
+// name, hp, attack. defenseValue, resistance, rarity
 const monsters = [
-  ['Ugly Fish', 20, 0, 0, 1],
-  ['Pretty Demon', 25, 0, 0.1, 1],
+  ['Ugly Fish', 20, 5, 5, 0, 1],
+  ['Pretty Demon', 25, 6, 6, 0.1, 1],
 ];
 
 // name, target, attribute, value, rarity
@@ -20,7 +20,7 @@ const spells = [
 
 // name, target, attribute, value, rarity
 const environments = [
-  ['Plane'],
+  [['Plane', 'Cold -1 attack'], [['patch', 'player', 'attack', -1]], 1],
 ];
 
 const artefacts = [

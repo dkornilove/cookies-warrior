@@ -14,7 +14,6 @@ export default {
   bye: name => log(`Well, ${name}, I hope you will come back to clear this cursed place!`),
   preStart: (mood, user) => ask(`Okay, ${mood.toLowerCase()} ${user}, lets find out what are you made of!`),
   startStage: stage => ask(`You come to ${stage.name} and fase ${stage.monster.name}`),
-  moveInfo: stats => ask(`You ${stats.player} are going to deal ${stats.plrdmg} damage
-         to monster ${stats.monster} that plans to ${stats.monsterplan}`),
+  moveInfo: stats => ask(`You ${stats.player} will ${stats.playerplan}. And monster ${stats.monster} plans to ${stats.monsterplan}`),
   offerCookies: () => {},
 };

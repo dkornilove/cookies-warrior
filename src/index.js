@@ -20,11 +20,44 @@ const greetings = () => {
   };
 };
 
+const processStage = (stage) => {
+  const startStats = stage.initialize();
+
+  const nextMove = (stats) => {
+    dialogs.moveInfo(stats);
+    const container = stage.getCookies();
+
+    const offerCookies = (cookies) => {
+      if (cookies.available === 0) {
+        return;
+      }
+      const meta = cookies.offer.map(([name, description]) => ({ name, description }));
+      const index = dialogs.offerCookies(meta);
+      if (index === -1) {
+        return;
+      }
+      stage.addModifier(cookies.offer[index]);
+      dialogs.moveInfo(stage.getStats());
+      const rest = stage.getCookies(index);
+      offerCookies(rest);
+    };
+
+    offerCookies(container);
+    const result = stage.processMove();
+    if (result.status === 'not-finished') {
+      return nextMove(stage.getStats());
+    }
+    return result;
+  };
+
+  return nextMove(startStats);
+};
+
 const nextStage = (player) => {
   const stage = factory.createStage(player);
   dialogs.startStage(stage);
   const result = processStage(stage);
-  switch (result.message) {
+  switch (result.status) {
     case 'dead':
       dialogs.dead(player);
       break;
@@ -37,30 +70,6 @@ const nextStage = (player) => {
     default:
       dialogs.wrong();
   }
-};
-
-const processStage = (stage) => {
-  const stats = stage.initialize();
-  const move = () => {
-    dialogs.moveInfo(stats);
-    const container = stage.getCookies();
-    const offerCookies = (cookies) => {
-      const meta = cookies.map(([name, description]) => ({ name, description }));
-      if (!cookies) {
-        return;
-      }
-      const index = dialogs.offerCookies(meta);
-      stage.applyModifier(cookies[index]);
-      if (index === -1) {
-        return;
-      }
-      const newCoockies = stage.getCookies(index);
-      offerCookies(newCoockies);
-    };
-    offerCookies(container);
-    const result = stage.completeMove();
-  };
-  return result || processStage(stage);
 };
 
 export default () => {

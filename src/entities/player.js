@@ -1,5 +1,3 @@
-import StateMachine from 'javascript-state-machine';
-
 export default class Player {
   constructor({ name, cookiesContainer, difficulty }) {
     this.name = name;
@@ -9,16 +7,33 @@ export default class Player {
     this.attack = 0;
     this.cookiesPerMove = difficulty.cookies;
     this.cookiesContainer = cookiesContainer;
-    this.artefacts = [];
     this.difficulty = difficulty;
     this.currentlevel = 1;
-    this.score = 0;
-    // eslint-disable-next-line no-underscore-dangle
-    this._fsm();
+
+    this.artefacts = [];
+    this.patch = [];
+    this.boost = [];
+    this.plan = 'attack';
+    this.plans = {
+      attack: {
+        rarity: 1,
+        getModifier: (res, def) => ['Attack', 'break', 'monster', 'hp', this.calcAttack(res, def)],
+        toString: res => `deal [${this.calcAttack(res)}] DMG`,
+      },
+    };
+  }
+
+  getFinalModifier(res, def) {
+    return this.plans[this.plan].getModifier(res, def);
+  }
+
+  calcAttack(res, def = 0) {
+    const value = this.attack * (1 - res) - def;
+    return value < 0 ? 0 : value.toFixed(2);
   }
 
   getCookies() {
-    return [...new Array(this.cookiesPerMove)]
+    return [...new Array(5)]
       .map(() => this.cookiesContainer[Math.floor(Math.random() * this.cookiesContainer.length)]);
   }
 
@@ -34,20 +49,16 @@ export default class Player {
       attack: this.attack,
     };
   }
-}
 
-StateMachine.factory(Player, {
-  init: 'init',
-  transitions: [
-    { name: 'patch', from: ['init', 'patched'], to: 'patched' },
-    { name: 'boost', from: 'patched', to: 'boosted' },
-    { name: 'normalize', from: 'boosted', to: 'patched' },
-    { name: 'reset', from: 'patched', to: 'init' },
-  ],
-  methods: {
-    onPatch: ({ fsm: player }, { player: modifiers }) => {},
-    onBust: () => {},
-    onNormalize: () => {},
-    onReset: () => {},
-  },
-});
+  apply(method, attribute, value) {
+    this[attribute] += value;
+    this[method].push([attribute, -value]);
+  }
+
+  reset(method) {
+    this[method].forEach(([attribute, value]) => {
+      this[attribute] += value;
+    });
+    this[method] = [];
+  }
+}
