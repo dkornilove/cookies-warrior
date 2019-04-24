@@ -27,6 +27,7 @@ const createCookiesContainer = (count) => {
     const newCookie = createModifier('cookies');
     cookiesContainer.push(newCookie);
   }
+  return cookiesContainer;
 };
 
 const createPlayer = ({ name, difficulty }) => {
@@ -40,6 +41,7 @@ const createSpellContainer = () => {
     const newSpell = createModifier('spells');
     spellContainer.push(newSpell);
   }
+  return spellContainer;
 };
 
 const createMonster = (difficulty) => {
@@ -48,12 +50,19 @@ const createMonster = (difficulty) => {
   return new Monster(params, spells, difficulty.multiplier);
 };
 
+const createArtefact = (player) => {
+  const artefact = pickRandomEntity('artefacts');
+  player.artefacts.push(artefact);
+  return artefact;
+};
+
 const createStage = (player) => {
   const monster = createMonster(player.difficulty);
   return new Stage(player, monster, createModifier('environments'));
 };
 
 export default {
+  createArtefact,
   createPlayer,
   createStage,
 };

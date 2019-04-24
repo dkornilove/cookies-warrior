@@ -6,10 +6,14 @@ export default class Stage {
     this.name = name;
     this.description = description;
     this.stageMeta = stageMeta;
+    this.cookiesToOffer = {
+      offer: null,
+      available: player.cookiesPerMove,
+    };
   }
 
   initialize() {
-    this.player.getModifiers().forEach(this.applyModifier);
+    this.player.getModifiers().forEach(m => this.applyModifier(m));
     this.applyModifier(this.stageMeta);
     this.monster.setPlan();
     return this.getStats();
@@ -20,47 +24,47 @@ export default class Stage {
     const { res, def } = this.player.getStats();
     const monsterEndMove = this.monster.getFinalModifier(res, def);
     this.applyModifier(monsterEndMove);
+    result.message = {
+      monster: monsterEndMove,
+    };
     if (this.player.hp > 0) {
-      const { res: mRes, def: mDef } = this.player.getStats();
+      const { res: mRes, def: mDef } = this.monster.getStats();
       const playerEndMove = this.player.getFinalModifier(mRes, mDef);
       this.applyModifier(playerEndMove);
+      result.message.player = playerEndMove;
       result.status = this.monster.hp > 0 ? 'not-finished' : 'passed';
     } else {
       result.status = 'dead';
     }
-
-    result.message = 'something happen'; // TODO
     this.player.reset('boost');
     this.monster.reset('boost');
     this.monster.setPlan();
     if (result.status === 'passed') {
-      this.player.reset('patch');
+      this.player.processStagePassed();
     }
-
     return result;
   }
 
-  getCookies(index) {
-    const memo = {};
-    if (!memo.offer || !index) {
-      memo.offer = this.player.getCookies();
-      memo.available = this.player.cookiesPerMove;
+  getCookies(index = null) {
+    if (!this.cookiesToOffer.offer || index === null) {
+      this.cookiesToOffer.offer = this.player.getCookies();
+      this.cookiesToOffer.available = this.player.cookiesPerMove;
     } else {
-      memo.offer.splice(index, 1);
-      memo.available -= 1;
+      this.cookiesToOffer.offer.splice(index, 1);
+      this.cookiesToOffer.available -= 1;
     }
-    return memo;
+    return this.cookiesToOffer;
   }
 
   applyModifier(modifier) {
     const [/* [name, description] */, settings] = modifier;
     settings.forEach(
-      ([method, target, attribute, value]) => this[target].apply(method, attribute, value),
+      ([method, target, attribute, value]) => this[target].flash(method, attribute, value),
     );
   }
 
   getStats() {
-    const createStatsString = (...stats) => stats.map(s => `[HP:${s.hp} DEF:${s.def}] RES:${s.res}`);
+    const createStatsString = (...stats) => stats.map(s => `[HP:${s.hp} DEF:${s.def} RES:${s.res}]`);
     const playerStats = this.player.getStats();
     const monsterStats = this.monster.getStats();
     const [player, monster] = createStatsString(playerStats, monsterStats);

@@ -13,7 +13,16 @@ export default {
   }),
   bye: name => log(`Well, ${name}, I hope you will come back to clear this cursed place!`),
   preStart: (mood, user) => ask(`Okay, ${mood.toLowerCase()} ${user}, lets find out what are you made of!`),
-  startStage: stage => ask(`You come to ${stage.name} and fase ${stage.monster.name}`),
-  moveInfo: stats => ask(`You ${stats.player} will ${stats.playerplan}. And monster ${stats.monster} plans to ${stats.monsterplan}`),
-  offerCookies: () => {},
+  startStage: stage => ask(`Stage ${stage.player.currentlevel}/${stage.player.difficulty.levels}.
+     You come to ${stage.name} [${stage.description}] and meet ${stage.monster.name}`),
+  moveInfo: stats => ask(`On the end of turn:
+    You ${stats.player} will ${stats.playerplan}. And monster ${stats.monster} plans to ${stats.monsterplan}`),
+  offerCookies: (cookies, count) => askKey(cookies, `Chose a cookie to eat. You have ${count} cookies left!`),
+  moveResult: ({ message: { monster, player } }) => {
+    const [[name, desc]] = monster;
+    const [[nameP, descP]] = player;
+    ask(`Monster used '${name}' and ${desc}.${player ? ` You used ${nameP} and ${descP}` : ''}`);
+  },
+  passed: art => ask(`You have completed the stage and got ${art}`),
+  dead: () => ask('YOU DIED!'),
 };

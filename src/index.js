@@ -31,12 +31,12 @@ const processStage = (stage) => {
       if (cookies.available === 0) {
         return;
       }
-      const meta = cookies.offer.map(([name, description]) => ({ name, description }));
-      const index = dialogs.offerCookies(meta);
+      const cookiesMeta = cookies.offer.map(([meta]) => meta);
+      const index = dialogs.offerCookies(cookiesMeta, cookies.available);
       if (index === -1) {
         return;
       }
-      stage.addModifier(cookies.offer[index]);
+      stage.applyModifier(cookies.offer[index]);
       dialogs.moveInfo(stage.getStats());
       const rest = stage.getCookies(index);
       offerCookies(rest);
@@ -44,6 +44,7 @@ const processStage = (stage) => {
 
     offerCookies(container);
     const result = stage.processMove();
+    dialogs.moveResult(result);
     if (result.status === 'not-finished') {
       return nextMove(stage.getStats());
     }
@@ -57,12 +58,14 @@ const nextStage = (player) => {
   const stage = factory.createStage(player);
   dialogs.startStage(stage);
   const result = processStage(stage);
+  const [artMeta] = factory.createArtefact(player);
   switch (result.status) {
     case 'dead':
       dialogs.dead(player);
       break;
     case 'passed':
-      nextStage(result.player);
+      dialogs.passed(artMeta);
+      nextStage(player);
       break;
     case 'aborted':
       dialogs.bye();
