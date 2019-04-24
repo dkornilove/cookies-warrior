@@ -1,7 +1,10 @@
-export default class Player {
+import Base, { prettifyValue, pickRndValueFromArray } from './fighter-base';
+
+export default class Player extends Base {
   constructor({ name, cookiesContainer, difficulty }) {
+    super();
     this.name = name;
-    this.hp = Number((50 / difficulty.multiplier).toFixed(2));
+    this.hp = prettifyValue(50 / difficulty.multiplier);
     this.defense = 0;
     this.resistance = 0;
     this.attack = 0;
@@ -24,55 +27,18 @@ export default class Player {
     };
   }
 
-  getPlan(res) {
-    return this.plans[this.plan].toString(res);
-  }
-
-  getFinalModifier(res, def) {
-    return this.plans[this.plan].getModifier(res, def);
-  }
-
-  calcAttack(res, def = 0) {
-    const value = this.attack * (1 - res) - def;
-    return value < 0 ? 0 : Number(value.toFixed(2));
-  }
-
   getCookies() {
     return [...new Array(5)]
-      .map(() => this.cookiesContainer[Math.floor(Math.random() * this.cookiesContainer.length)]);
+      .map(() => pickRndValueFromArray(this.cookiesContainer));
   }
 
   getModifiers() {
     return this.artefacts;
   }
 
-  getStats() {
-    return {
-      hp: this.hp,
-      def: this.defense,
-      res: this.resistance,
-      attack: this.attack,
-    };
-  }
-
   processStagePassed() {
     this.reset('patch');
     this.currentlevel += 1;
     this.difficulty.multiplier += 0.1;
-  }
-
-  flash(method, attribute, value) {
-    if (!this[method]) {
-      this[method] = [];
-    }
-    this[attribute] += value;
-    this[method].push([attribute, -value]);
-  }
-
-  reset(method) {
-    this[method].forEach(([attribute, value]) => {
-      this[attribute] += value;
-    });
-    this[method] = [];
   }
 }

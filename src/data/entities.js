@@ -10,13 +10,13 @@ const cookies = [
 // name, hp, attack. defenseValue, resistance, rarity
 const monsters = [
   ['Ugly Fish', 10, 6, 5, 0, 1],
-  ['Pretty Demon', 11, 7, 6, 0.1, 0.95],
-  ['Snowman Jhon', 12, 6, 7, 0.12, 0.9],
+  ['Pretty Demon', 11, 7, 6, 0, 0.95],
+  ['Snowman Jhon', 12, 6, 7, 0, 0.9],
 ];
 
 // name, target, attribute, value, rarity
 const spells = [
-  [['Knock out the weapon', 'Decreased player attack for [10] until end of turn'], [['boost', 'player', 'attack', -10]], 1],
+  [['Knock out the weapon', 'Decrease player attack for [10] until end of turn'], [['boost', 'player', 'attack', -10]], 1],
   [['Snow defense', ''], [['patch', 'monster', 'defense', +2]], 1],
   [['Fury', ''], [['patch', 'monster', 'attack', +2]], 1],
 ];

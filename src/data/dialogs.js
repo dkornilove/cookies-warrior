@@ -4,20 +4,25 @@ import chalk from 'chalk';
 const ask = readline.question;
 const askKey = readline.keyInSelect;
 const { log } = console;
+const {
+  bold, italic, red, blueBright, greenBright, redBright, bgYellowBright,
+} = chalk;
+const handleCookies = cookies => cookies.map(([name, desc]) => `${bgYellowBright.black(name)} [${italic(desc)}]`);
+const statsToString = stats => `${red.bold('\u2665')}${bold(stats.hp)} ${chalk.blue.bold('\u2666')}${bold(stats.def)} ${greenBright.bold('\u2699')}${bold(stats.res)}`;
 
 export default {
-  askName: () => ask(chalk.bold('Greetings, traveler! What is your name? '), { defaultInput: 'Stranger' }),
-  greetings: user => ask(`Well, well, ${user}, I hope you like cookies! And monsters.. Slashing monsters!`),
+  askName: () => ask('Greetings, traveler! What is your name?', { defaultInput: 'Stranger' }),
+  greetings: user => ask(`Well, well, ${blueBright(user)}, I hope you love cookies! And monsters.. ${bold('Slashing monsters!')}`),
   askForMood: moods => askKey(moods, 'How do you feel yourself today?', {
-    cancel: chalk.bgBlue('No more murders today'),
+    cancel: 'No more murders today',
   }),
-  bye: name => log(`Well, ${name}, I hope you will come back to clear this cursed place!`),
-  preStart: (mood, user) => ask(`Okay, ${mood.toLowerCase()} ${user}, lets find out what are you made of!`),
+  bye: name => log(`Well, ${blueBright(name)}, I hope you will come back to clear this cursed place!`),
+  preStart: (mood, user) => ask(`Okay, ${italic(mood.toLowerCase())} ${blueBright(user)}, lets find out what are you made of!`),
   startStage: stage => ask(`Stage ${stage.player.currentlevel}/${stage.player.difficulty.levels}.
-     You come to ${stage.name} [${stage.description}] and meet ${stage.monster.name}`),
+     You come to ${greenBright(stage.name)} [${italic(stage.description)}] and meet ${redBright(stage.monster.name)}`),
   moveInfo: stats => ask(`On the end of turn:
-    You ${stats.player} will ${stats.playerplan}. And monster ${stats.monster} plans to ${stats.monsterplan}`),
-  offerCookies: (cookies, count) => askKey(cookies, `Chose a cookie to eat. You have ${count} cookies left!`),
+    You ${statsToString(stats.player)} will ${stats.playerplan}. And monster ${statsToString(stats.monster)} plans to ${stats.monsterplan}`),
+  offerCookies: (cookies, count) => askKey(handleCookies(cookies), `Chose a cookie to eat. You have ${count} cookies left!`),
   moveResult: ({ message: { monster, player } }) => {
     const [[name, desc]] = monster;
     const [[nameP, descP]] = player;

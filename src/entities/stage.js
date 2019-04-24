@@ -64,16 +64,14 @@ export default class Stage {
   }
 
   getStats() {
-    const createStatsString = (...stats) => stats.map(s => `[HP:${s.hp} DEF:${s.def} RES:${s.res}]`);
     const playerStats = this.player.getStats();
     const monsterStats = this.monster.getStats();
-    const [player, monster] = createStatsString(playerStats, monsterStats);
     const playerplan = this.player.getPlan(monsterStats.res);
     const monsterplan = this.monster.getPlan(playerStats.res);
     return {
-      player,
+      player: playerStats,
       playerplan,
-      monster,
+      monster: monsterStats,
       monsterplan,
     };
   }
