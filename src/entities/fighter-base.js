@@ -1,9 +1,9 @@
-export const prettifyValue = value => Number(value.toFixed(1));
+export const prettifyValue = value => Number(value.toFixed(2));
 export const pickRndValueFromArray = arr => arr[Math.floor(Math.random() * arr.length)];
 
 export default class FIghterBase {
   calcAttack(res, def = 0) {
-    const value = this.attack * (1 - res) - def;
+    const value = (this.attack < 0 ? 0 : this.attack) * (1 - res) - (def < 0 ? 0 : def);
     return value < 0 ? 0 : prettifyValue(value);
   }
 

@@ -40,7 +40,7 @@ export default class Stage {
     this.monster.reset('boost');
     this.monster.setPlan();
     if (result.status === 'passed') {
-      this.player.processStagePassed();
+      result.canContinue = this.player.processStagePassed();
     }
     return result;
   }

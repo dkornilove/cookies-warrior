@@ -64,8 +64,12 @@ const nextStage = (player) => {
       dialogs.dead(player);
       break;
     case 'passed':
-      dialogs.passed(artMeta);
-      nextStage(player);
+      if (result.canContinue) {
+        dialogs.passed(artMeta);
+        nextStage(player);
+      } else {
+        dialogs.congrats(player.name);
+      }
       break;
     case 'aborted':
       dialogs.bye();

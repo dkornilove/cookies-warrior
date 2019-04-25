@@ -12,15 +12,17 @@ export default class Player extends Base {
     this.cookiesContainer = cookiesContainer;
     this.difficulty = difficulty;
     this.currentlevel = 1;
-
+    this.getcookies = this.cookiesPerMove + 3;
     this.artefacts = [];
     this.plan = 'attack';
+    this.boost = [];
+    this.patch = [];
     this.plans = {
       attack: {
         rarity: 1,
         getModifier: (res, def) => {
           const value = this.calcAttack(res, def);
-          return [['Attack', `Deals ${value} damage to monster`], [['break', 'monster', 'hp', -value]]];
+          return [['Attack', `Dealt [${value}] damage to monster`], [['break', 'monster', 'hp', -value]]];
         },
         toString: res => `deal [${this.calcAttack(res)}] DMG`,
       },
@@ -28,7 +30,7 @@ export default class Player extends Base {
   }
 
   getCookies() {
-    return [...new Array(5)]
+    return [...new Array(this.getcookies < 0 ? 0 : this.getcookies)]
       .map(() => pickRndValueFromArray(this.cookiesContainer));
   }
 
@@ -40,5 +42,6 @@ export default class Player extends Base {
     this.reset('patch');
     this.currentlevel += 1;
     this.difficulty.multiplier += 0.1;
+    return this.currentlevel <= this.difficulty.levels;
   }
 }
