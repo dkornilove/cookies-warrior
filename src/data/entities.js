@@ -1,4 +1,4 @@
-// name, target, attribute, value, rarity
+// [[name, description], [[method, target, attribute, value],[...]], rarity]
 const cookies = [
   [['Sugar cookie', '+3 attack until end of turn'], [['boost', 'player', 'attack', +3]], 1],
   [['Milk cookie', '+3 defense until end of turn'], [['boost', 'player', 'defense', +3]], 1],
@@ -21,7 +21,7 @@ const cookies = [
 
 ];
 
-// name, hp, attack. defenseValue, resistance, rarity
+// [name, hp, attack. defenseValue, resistance, rarity]
 const monsters = [
   ['Dummy', 10, 6, 5, 0, 1],
   ['Pretty Demon', 11, 7, 6, 0, 1],
@@ -43,7 +43,7 @@ const monsters = [
 
 ];
 
-// name, target, attribute, value, rarity
+// [[name, description], [[method, target, attribute, value],[...]], rarity]
 const spells = [
   [['Knock out the weapon', '-10 player attack until end of turn'], [['boost', 'player', 'attack', -10]], 1],
   [['Snow defense', '+2 monster defense until end of fight'], [['patch', 'monster', 'defense', +2]], 1],
@@ -56,7 +56,7 @@ const spells = [
 
 ];
 
-// name, target, attribute, value, rarity
+// [[name, description], [[method, target, attribute, value],[...]], rarity]
 const environments = [
   [['Yellow Plane', 'Cold: -1 attack player'], [['patch', 'player', 'attack', -1]], 1],
   [['Blue Swamp', 'Warm: +1 attack monster, +1 attack player'], [['patch', 'monster', 'attack', +1], ['patch', 'player', 'attack', +1]], 1],
@@ -73,6 +73,7 @@ const environments = [
 
 ];
 
+// [[name, description], [[method, target, attribute, value],[...]], rarity]
 const artefacts = [
   [['Stick of the truth', '+1 player attack'], [['patch', 'player', 'attack', +1]], 1],
   [['Ogre Belt', '+1 player defense'], [['patch', 'player', 'defense', +1]], 1],

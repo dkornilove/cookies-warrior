@@ -2,14 +2,16 @@
   "name": "cookies-warrior",
   "version": "1.0.0",
   "description": "A game about eating cookies and slashing monsters",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "node": "node",
     "babel-node": "babel-node",
     "build": "NODE_ENV=production babel src --out-dir dist --source-maps inline",
     "prepublishOnly": "npm run build",
     "eslint": "eslint"
+  },
+  "bin": {
+    "cookies-warrior": "dist/bin/game.js"
   },
   "repository": {
     "type": "git",
@@ -32,9 +34,7 @@
     "eslint-plugin-import": "^2.17.2"
   },
   "dependencies": {
-    "@types/readline-sync": "^1.4.3",
     "chalk": "^2.4.2",
-    "javascript-state-machine": "^3.1.0",
     "lodash": "^4.17.11",
     "readline-sync": "^1.4.9"
   }

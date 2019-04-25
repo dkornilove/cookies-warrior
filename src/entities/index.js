@@ -11,7 +11,6 @@ const pickRandomEntity = (repository) => {
   const pickRecursively = () => {
     item = data[Math.floor(Math.random() * data.length)];
     const itemRarity = _.last(item);
-    // console.log(`REP= ${repository}, ITEMRARITY =${itemRarity}, RARITY = ${rarity}`);
     if (itemRarity > rarity) {
       return item;
     }

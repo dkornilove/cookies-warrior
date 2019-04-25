@@ -8,7 +8,7 @@ const greetings = () => {
   dialogs.greetings(name);
   const index = dialogs.askForMood(moods);
   if (index === -1) {
-    dialogs.bye();
+    dialogs.bye(name);
     return null;
   }
   const mood = moods[index];
@@ -72,7 +72,7 @@ const nextStage = (player) => {
       }
       break;
     case 'aborted':
-      dialogs.bye();
+      dialogs.bye(player.name);
       break;
     default:
       dialogs.wrong();
