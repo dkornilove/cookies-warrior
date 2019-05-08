@@ -3,7 +3,7 @@ const cookies = [
   [['Sugar cookie', '+3 attack until end of turn'], [['boost', 'player', 'attack', +3]], 1],
   [['Milk cookie', '+3 defense until end of turn'], [['boost', 'player', 'defense', +3]], 1],
   [['Chocolate cookie', '+3 attack, +1 defense until end of turn'], [['boost', 'player', 'attack', +3], ['boost', 'player', 'defense', +1]], 0.7],
-  [['Honey cookie', '+5 attack until end of turn'], [['boost', 'player', 'attack', +5]], 0.6],
+  [['Honey cookie', '+5 attack until end of turn'], [['boost', 'player', 'attack', +5]], 0.4],
   [['Void cookie', '+2 attack until end of fight'], [['patch', 'player', 'attack', +2]], 0.6],
   [['Lime cookie', '-3 monster attack until end of turn'], [['boost', 'monster', 'attack', -3]], 0.6],
   [['Сracker', '+5 attack, +5 defense until end of turn'], [['boost', 'player', 'attack', +5], ['boost', 'player', 'defense', +5]], 0.3],
