@@ -31,8 +31,8 @@ const processStage = (stage) => {
       if (cookies.available === 0) {
         return;
       }
-      const cookiesMeta = cookies.offer.map(([meta]) => meta);
-      const index = dialogs.offerCookies(cookiesMeta, cookies.available);
+      // const cookiesMeta = cookies.offer.map(([meta]) => meta);
+      const index = dialogs.offerCookies(cookies);
       if (index === -1) {
         return;
       }

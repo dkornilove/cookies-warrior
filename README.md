@@ -12,6 +12,7 @@ make start
 ```
 **Play**
 ```
+
 $ sudo npm install -g cookies-warrior
 $ cookies-warrior
 ```

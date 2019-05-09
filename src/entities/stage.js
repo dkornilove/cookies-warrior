@@ -1,11 +1,8 @@
 export default class Stage {
-  constructor(player, monster, stageMeta) {
-    const [[name, description]] = stageMeta;
+  constructor(player, monster, modifier) {
     this.player = player;
     this.monster = monster;
-    this.name = name;
-    this.description = description;
-    this.stageMeta = stageMeta;
+    this.modifier = modifier;
     this.cookiesToOffer = {
       offer: null,
       available: player.cookiesPerMove,
@@ -14,7 +11,7 @@ export default class Stage {
 
   initialize() {
     this.player.getModifiers().forEach(m => this.applyModifier(m));
-    this.applyModifier(this.stageMeta);
+    this.applyModifier(this.modifier);
     this.monster.setPlan();
     return this.getStats();
   }
@@ -22,16 +19,16 @@ export default class Stage {
   processMove() {
     const result = {};
     const { res, def } = this.player.getStats();
-    const monsterEndMove = this.monster.getFinalModifier(res, def);
-    this.applyModifier(monsterEndMove);
+    const monsterModifier = this.monster.getFinalModifier(res, def);
+    this.applyModifier(monsterModifier);
     result.message = {
-      monster: monsterEndMove,
+      monsterModifier,
     };
     if (this.player.hp > 0) {
       const { res: mRes, def: mDef } = this.monster.getStats();
-      const playerEndMove = this.player.getFinalModifier(mRes, mDef);
-      this.applyModifier(playerEndMove);
-      result.message.player = playerEndMove;
+      const playerModifier = this.player.getFinalModifier(mRes, mDef);
+      this.applyModifier(playerModifier);
+      result.message.playerModifier = playerModifier;
       result.status = this.monster.hp > 0 ? 'not-finished' : 'passed';
     } else {
       result.status = 'dead';
@@ -57,10 +54,8 @@ export default class Stage {
   }
 
   applyModifier(modifier) {
-    const [/* [name, description] */, settings] = modifier;
-    settings.forEach(
-      ([method, target, attribute, value]) => this[target].flash(method, attribute, value),
-    );
+    modifier.modificators
+      .forEach(m => this[m.target].flash(m.method, m.attribute, Number(m.value)));
   }
 
   getStats() {

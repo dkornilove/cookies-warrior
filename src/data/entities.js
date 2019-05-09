@@ -1,7 +1,7 @@
 // [[name, description], [[method, target, attribute, value],[...]], rarity]
 const cookies = [
   ['Sugar cookie#persistent#1', ['boost#player#attack#+3']],
-  ['Milk cookie#persistent#1', ['boost#player#defense#+3']],
+  ['Milk cookie#persistent#0.8', ['boost#player#defense#+3']],
   /* [['Chocolate cookie', '+3 attack, +1 defense until end of turn'], [['boost', 'player', 'attack', +3], ['boost', 'player', 'defense', +1]], 0.7],
   [['Honey cookie', '+5 attack until end of turn'], [['boost', 'player', 'attack', +5]], 0.4],
   [['Void cookie', '+2 attack until end of fight'], [['patch', 'player', 'attack', +2]], 0.6],
@@ -59,7 +59,7 @@ const spells = [
 // [[name, description], [[method, target, attribute, value],[...]], rarity]
 const environments = [
   ['Yellow Plane#Cold:#1', ['patch#player#attack#-1']],
-  ['Blue Swamp#Warm:#0.8'['patch#monster#attack#+1', 'patch#player#attack#+1']],
+  ['Blue Swamp#Warm:#0.8', ['patch#monster#attack#+1', 'patch#player#attack#+1']],
   /* [['Mountains', 'Fear: -1 cookie'], [['patch', 'player', 'cookiesPerMove', -1], ['patch', 'player', 'getcookies', -1]], 0.8],
   [['Magic Forest', 'Joy: +1 defense player'], [['patch', 'player', 'defense', +1]], 1],
   [['Abandoned Village', 'Sadness: +0.1 resistance monster'], [['patch', 'monster', 'resistance', +0.1]], 1],
@@ -91,27 +91,29 @@ const artefacts = [
 
 ];
 
-const parse = (repository) => {
-  repository.map((e) => {
-    const [modSettings, modStrings] = e;
-    const [name, meta, rarity] = modSettings.split('#');
-    const modificators = modStrings.map(s => s.split('#'))
-      .map(([method, target, attribute, value]) => ({
-        method, target, attribute, value,
-      }));
-    return {
-      name,
-      meta,
-      rarity,
-      modificators,
-    };
-  });
-};
+const parseModificators = repository => repository.map((e) => {
+  const [modSettings, modStrings] = e;
+  const [name, meta, rarity] = modSettings.split('#');
+  const modificators = modStrings.map(s => s.split('#'))
+    .map(([method, target, attribute, value]) => ({
+      method, target, attribute, value,
+    }));
+  return {
+    name,
+    meta,
+    rarity,
+    modificators,
+  };
+});
+
+const parseMonsters = () => monsters.map(([name, hp, attack, defense, resistance, rarity]) => ({
+  name, hp, attack, defense, resistance, rarity,
+}));
 
 export default {
-  cookies: parse(cookies),
-  monsters,
-  spells: parse(spells),
-  environments: parse(environments),
-  artefacts: parse(artefacts),
+  cookies: parseModificators(cookies),
+  monsters: parseMonsters(),
+  spells: parseModificators(spells),
+  environments: parseModificators(environments),
+  artefacts: parseModificators(artefacts),
 };

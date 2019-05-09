@@ -22,7 +22,10 @@ export default class Player extends Base {
         rarity: 1,
         getModifier: (res, def) => {
           const value = this.calcAttack(res, def);
-          return [['Attack', `Dealt [${value}] damage to monster`], [['break', 'monster', 'hp', -value]]];
+          return {
+            name: 'Attack',
+            modificators: [['break', 'monster', 'hp', -value]],
+          };
         },
         toString: res => `deal [${this.calcAttack(res)}] DMG`,
       },
