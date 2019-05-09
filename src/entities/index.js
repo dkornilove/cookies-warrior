@@ -1,4 +1,4 @@
-import _ from 'lodash';
+// import _ from 'lodash';
 import entities from '../data/entities';
 import Player from './player';
 import Monster from './monster';
@@ -10,7 +10,7 @@ const pickRandomEntity = (repository) => {
   let entity;
   const pickRecursively = () => {
     entity = data[Math.floor(Math.random() * data.length)];
-    if (entity.rarity > initRarity) {
+    if (entity.rarity >= initRarity) {
       return entity;
     }
     return pickRecursively();

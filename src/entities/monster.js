@@ -19,7 +19,13 @@ export default class Monster extends Base {
           const value = this.calcAttack(res, def);
           return {
             name: 'Attack',
-            modificators: [['break', 'player', 'hp', -value]],
+            meta: '',
+            modificators: [{
+              method: 'break',
+              target: 'player',
+              attribute: 'hp',
+              value: -value,
+            }],
           };
         },
         toString: res => `deal [${this.calcAttack(res)}] DMG`,
@@ -28,9 +34,15 @@ export default class Monster extends Base {
         rarity: 0.5,
         getModifier: () => ({
           name: 'Block',
-          modificators: [['boost', 'monster', 'defense', this.defValue]],
+          meta: '',
+          modificators: [{
+            method: 'boost',
+            target: 'monster',
+            attribute: 'defense',
+            value: this.defValue,
+          }],
         }),
-        toString: () => `defend [+${this.defValue}]`,
+        toString: () => `defend with [+${this.defValue}]`,
       },
       'cast a spell': {
         rarity: 0.5,
@@ -47,7 +59,7 @@ export default class Monster extends Base {
     const setRecursively = () => {
       const plan = pickRndValueFromArray(plans);
       const planRarity = this.plans[plan].rarity;
-      if (planRarity > initRarity) {
+      if (planRarity >= initRarity) {
         this.plan = plan;
         return;
       }

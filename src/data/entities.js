@@ -1,10 +1,11 @@
 // [[name, description], [[method, target, attribute, value],[...]], rarity]
 const cookies = [
-  ['Sugar cookie#persistent#1', ['boost#player#attack#+3']],
-  ['Milk cookie#persistent#0.8', ['boost#player#defense#+3']],
-  /* [['Chocolate cookie', '+3 attack, +1 defense until end of turn'], [['boost', 'player', 'attack', +3], ['boost', 'player', 'defense', +1]], 0.7],
-  [['Honey cookie', '+5 attack until end of turn'], [['boost', 'player', 'attack', +5]], 0.4],
-  [['Void cookie', '+2 attack until end of fight'], [['patch', 'player', 'attack', +2]], 0.6],
+  ['Sugar cookie##1', ['boost#player#attack#+3']],
+  ['Milk cookie##1', ['boost#player#defense#+3']],
+  ['Honey cookie#Consumable:#0.4', ['boost#player#attack#+5']],
+  ['Chocolate cookie##0.8', ['boost#player#attack#+3', 'boost#player#defense#+1']],
+  ['Charcoal biscuit#Consumable:#0.2', ['break#monster#hp#-3', 'break#player#hp#+3']],
+  /* [['Void cookie', '+2 attack until end of fight'], [['patch', 'player', 'attack', +2]], 0.6],
   [['Lime cookie', '-3 monster attack until end of turn'], [['boost', 'monster', 'attack', -3]], 0.6],
   [['Сracker', '+5 attack, +5 defense until end of turn'], [['boost', 'player', 'attack', +5], ['boost', 'player', 'defense', +5]], 0.3],
   [['Biscuit', '+0.3 resistance until end of turn'], [['boost', 'player', 'resistance', +0.3]], 0.4],
@@ -15,7 +16,6 @@ const cookies = [
   [['Rosette', '+1 attack, +1 defense, +0.1 resistance until end of fight'], [['patch', 'player', 'attack', +1], ['patch', 'player', 'defense', +1], ['patch', 'player', 'resistance', +0.1]], 0.4],
   [['Gingerbread man', '-3 hp monster'], [['break', 'monster', 'hp', -3]], 0.3],
   [['Digestive biscuit', '+3 hp'], [['break', 'player', 'hp', +3]], 0.3],
-  [['Charcoal biscuit', '+3 hp, -3 hp monster'], [['break', 'monster', 'hp', -3], ['break', 'player', 'hp', +3]], 0.2],
   [['Carrot cookie', '+1 cookie until end of fight'], [['patch', 'player', 'cookiesPerMove', +1], ['patch', 'player', 'getcookies', +1]], 0.3],
   [['Butter cookie', '+5 attack, -1 cookie until end of fight'], [['patch', 'player', 'cookiesPerMove', -1], ['patch', 'player', 'getcookies', -1], ['patch', 'player', 'attack', +5]], 0.3], */
 
@@ -75,8 +75,8 @@ const environments = [
 
 // [[name, description], [[method, target, attribute, value],[...]], rarity]
 const artefacts = [
-  ['Stick of the truth#Applies at the level start#1', ['patch#player#attack#+1']],
-  ['Ogre Belt#Applies at the level start#1', ['patch#player#defense#+1']],
+  ['Stick of the truth#Applies at the level start:#1', ['patch#player#attack#+1']],
+  ['Ogre Belt#Applies at the level start:#1', ['patch#player#defense#+1']],
   /* [['Horseshoe', '+1 cookie'], [['patch', 'player', 'cookiesPerMove', +1], ['patch', 'player', 'getcookies', +1]], 0.7],
   [['Staff of Humiliation', '-0.1 monster resistance'], [['patch', 'monster', 'resistance', -0.1]], 1],
   [['Sword of Justice', '+1 player attack, -0.1 monster resistance'], [['patch', 'player', 'attack', +1], ['patch', 'monster', 'resistance', -0.1]], 0.95],

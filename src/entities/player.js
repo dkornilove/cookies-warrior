@@ -12,7 +12,7 @@ export default class Player extends Base {
     this.cookiesContainer = cookiesContainer;
     this.difficulty = difficulty;
     this.currentlevel = 1;
-    this.getcookies = this.cookiesPerMove + 3;
+    this.getcookies = this.cookiesPerMove + 2;
     this.artefacts = [];
     this.plan = 'attack';
     this.boost = [];
@@ -24,7 +24,13 @@ export default class Player extends Base {
           const value = this.calcAttack(res, def);
           return {
             name: 'Attack',
-            modificators: [['break', 'monster', 'hp', -value]],
+            meta: '',
+            modificators: [{
+              method: 'break',
+              target: 'monster',
+              attribute: 'hp',
+              value: -value,
+            }],
           };
         },
         toString: res => `deal [${this.calcAttack(res)}] DMG`,
@@ -32,9 +38,18 @@ export default class Player extends Base {
     };
   }
 
+  initializeStage() {
+    this.stageContainer = [...this.cookiesContainer];
+  }
+
   getCookies() {
     return [...new Array(this.getcookies < 0 ? 0 : this.getcookies)]
-      .map(() => pickRndValueFromArray(this.cookiesContainer));
+      .map(() => pickRndValueFromArray(this.stageContainer));
+  }
+
+  consumeCookie(name) {
+    const index = this.stageContainer.findIndex(c => c.name === name);
+    this.stageContainer.splice(index, 1);
   }
 
   getModifiers() {

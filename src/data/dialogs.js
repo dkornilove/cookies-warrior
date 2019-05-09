@@ -5,25 +5,25 @@ const ask = readline.question;
 const askKey = readline.keyInSelect;
 const { log } = console;
 const {
-  bold, italic, red, blueBright, greenBright, redBright, bgYellowBright, grey, yellow,
+  bold, italic, red, blueBright, greenBright, redBright, grey, yellow, green,
 } = chalk;
 
 const statsToString = stats => `${red.bold('\u2665')} ${bold(stats.hp)} ${chalk.blue.bold('\u2666')} ${bold(stats.def)} ${greenBright.bold('\u2699')} ${bold(stats.res)}`;
 const createDescription = (mod) => {
   const endings = {
-    boost: `until the end of the ${red('turn')}`,
+    boost: `until the end of the ${green('turn')}`,
     patch: `until the end of the ${red('fight')}`,
     break: '',
   };
   const ending = endings[mod.modificators[0].method];
-  return `[${mod.meta} ${mod.modificators.map(m => `${m.value} ${m.target} ${m.attribute} `).join('')} ${ending}]`.trim();
+  return `[${mod.meta} ${mod.modificators.map(m => `${m.value > 0 ? bold.green(`${m.value}`) : bold.redBright(m.value)} ${m.target} ${m.attribute} `).join('')}${ending}]`.trim();
 };
 const handleCookies = (cookies) => {
   const colors = {
-    1: bold.grey,
-    0.8: bold.blueBright,
-    0.4: bold.magenta,
-    0.2: bold.yellow,
+    1: bold.bgBlack.whiteBright,
+    0.8: bold.bgBlack.blueBright,
+    0.4: bold.bgBlack.magentaBright,
+    0.2: bold.bgBlack.yellowBright,
   };
   return cookies.map(c => `${colors[c.rarity](c.name)} ${italic(createDescription(c))}`);
 };
@@ -40,16 +40,21 @@ export default {
 
   startStage: stage => ask(`
   Stage ${bold(stage.player.currentlevel)}/${bold(stage.player.difficulty.levels)}:
-     You come to ${greenBright(stage.modifier.name)} ${italic(createDescription(stage.modifier))} and meet ${redBright(stage.monster.name)}`),
+     You come to ${greenBright(stage.modifier.name)} 
+     ${italic(createDescription(stage.modifier))} 
+     and meet ${redBright(stage.monster.name)}`),
   moveInfo: stats => ask(`
   ${bold('On the end of the turn')}:
-    You ${statsToString(stats.player)} will ${bold.italic.redBright(stats.playerplan)}. And monster ${statsToString(stats.monster)} plans to ${bold.italic.blueBright(stats.monsterplan)}
-    `),
+    You ${statsToString(stats.player)} will ${bold.italic.redBright(stats.playerplan)}. 
+    And monster ${statsToString(stats.monster)} plans to ${bold.italic.blueBright(stats.monsterplan)}`),
   offerCookies: cookies => askKey(handleCookies(cookies.offer), `Chose a cookie to eat. You have ${bold.bgYellowBright.black(cookies.available)} cookies left!`),
-  moveResult: ({ message: { monsterModifier, playerModifier } }) => ask(`
-    Monster used ${redBright(monsterModifier.name)} ${italic(createDescription(monsterModifier))}.${playerModifier ? ` You used ${red(playerModifier.name)} ${italic(createDescription(playerModifier))}` : ''}`),
-  passed: art => ask(bold(`
-  You have slashed the monster and got ${yellow(art.name)} ${italic(createDescription(art))}`)),
+  moveResult: ({ message: { monsterModifier, playerModifier, cookiesCount } }) => ask(`
+    Monster used ${redBright(monsterModifier.name)} ${italic(createDescription(monsterModifier))}.${playerModifier ? ` 
+    You used ${red(playerModifier.name)} ${italic(createDescription(playerModifier))}.` : ''} 
+    ${grey(`${cookiesCount} cookies left`)}`),
+  passed: artefact => ask(bold(`
+  You have slashed the monster and got ${yellow(artefact.name)} 
+  ${italic(createDescription(artefact))}`)),
   dead: () => ask(bold.red('YOU DIED!')),
   congrats: name => ask(bold.green(`Thank you, ${blueBright(name)}! You have cleared this cursed place! ${grey('For now..')}`)),
 };

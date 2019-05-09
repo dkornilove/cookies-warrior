@@ -10,6 +10,7 @@ export default class Stage {
   }
 
   initialize() {
+    this.player.initializeStage();
     this.player.getModifiers().forEach(m => this.applyModifier(m));
     this.applyModifier(this.modifier);
     this.monster.setPlan();
@@ -21,8 +22,10 @@ export default class Stage {
     const { res, def } = this.player.getStats();
     const monsterModifier = this.monster.getFinalModifier(res, def);
     this.applyModifier(monsterModifier);
+    const cookiesCount = this.player.stageContainer.length;
     result.message = {
       monsterModifier,
+      cookiesCount,
     };
     if (this.player.hp > 0) {
       const { res: mRes, def: mDef } = this.monster.getStats();
@@ -42,13 +45,30 @@ export default class Stage {
     return result;
   }
 
-  getCookies(index = null) {
-    if (!this.cookiesToOffer.offer || index === null) {
+  processCookie(index) {
+    const cookie = this.cookiesToOffer.offer[index];
+    this.applyModifier(cookie);
+    if (cookie.meta === 'Consumable:') {
+      this.player.consumeCookie(cookie.name);
+    }
+    this.cookiesToOffer.offer.splice(index, 1);
+    this.cookiesToOffer.available -= 1;
+    if (this.player.hp <= 0) {
+      return 'dead';
+    }
+    if (this.monster.hp <= 0) {
+      return 'passed';
+    }
+    if (this.cookiesToOffer.available === 0) {
+      return 'move end';
+    }
+    return 'next';
+  }
+
+  getCookies() {
+    if (!this.cookiesToOffer.offer || this.cookiesToOffer.available === 0) {
       this.cookiesToOffer.offer = this.player.getCookies();
       this.cookiesToOffer.available = this.player.cookiesPerMove;
-    } else {
-      this.cookiesToOffer.offer.splice(index, 1);
-      this.cookiesToOffer.available -= 1;
     }
     return this.cookiesToOffer;
   }

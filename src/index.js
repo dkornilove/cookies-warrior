@@ -28,27 +28,29 @@ const processStage = (stage) => {
     const container = stage.getCookies();
 
     const offerCookies = (cookies) => {
-      if (cookies.available === 0) {
-        return;
-      }
-      // const cookiesMeta = cookies.offer.map(([meta]) => meta);
       const index = dialogs.offerCookies(cookies);
       if (index === -1) {
-        return;
+        return 'move end';
       }
-      stage.applyModifier(cookies.offer[index]);
+      const result = stage.processCookie(index);
       dialogs.moveInfo(stage.getStats());
-      const rest = stage.getCookies(index);
-      offerCookies(rest);
+      if (result === 'next') {
+        const rest = stage.getCookies();
+        return offerCookies(rest);
+      } return result;
     };
 
-    offerCookies(container);
-    const result = stage.processMove();
-    dialogs.moveResult(result);
-    if (result.status === 'not-finished') {
-      return nextMove(stage.getStats());
+    const cookiesResult = offerCookies(container);
+
+    if (cookiesResult === 'move end') {
+      const result = stage.processMove();
+      dialogs.moveResult(result);
+      if (result.status === 'not-finished') {
+        return nextMove(stage.getStats());
+      }
+      return result;
     }
-    return result;
+    return cookiesResult;
   };
 
   return nextMove(startStats);
@@ -58,14 +60,14 @@ const nextStage = (player) => {
   const stage = factory.createStage(player);
   dialogs.startStage(stage);
   const result = processStage(stage);
-  const [artMeta] = factory.createArtefact(player);
+  const artefact = factory.createArtefact(player);
   switch (result.status) {
     case 'dead':
       dialogs.dead(player);
       break;
     case 'passed':
       if (result.canContinue) {
-        dialogs.passed(artMeta);
+        dialogs.passed(artefact);
         nextStage(player);
       } else {
         dialogs.congrats(player.name);
