@@ -9,6 +9,15 @@ const {
 } = chalk;
 const handleCookies = cookies => cookies.map(([name, desc]) => `${bgYellowBright.black.bold(name)} [${italic(desc)}]`);
 const statsToString = stats => `${red.bold('\u2665')} ${bold(stats.hp)} ${chalk.blue.bold('\u2666')} ${bold(stats.def)} ${greenBright.bold('\u2699')} ${bold(stats.res)}`;
+const createDescription = (mod) => {
+  const endings = {
+    boost: `until end of the ${red('turn')}`,
+    patch: `until end of the ${red('fight')}`,
+    break: '',
+  };
+  const ending = endings[mod.modificators[0].method];
+  return `[${mod.meta} ${mod.modificators.map(m => `${m.value} ${m.target} ${m.attribute} `).join('')} ${ending}]`.trim();
+};
 
 export default {
   askName: () => ask(`Greetings, traveler! What is your name? ${grey.italic('enter your name ')}`, { defaultInput: 'Stranger' }),

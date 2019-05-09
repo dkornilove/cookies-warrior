@@ -1,8 +1,8 @@
 // [[name, description], [[method, target, attribute, value],[...]], rarity]
 const cookies = [
-  [['Sugar cookie', '+3 attack until end of turn'], [['boost', 'player', 'attack', +3]], 1],
-  [['Milk cookie', '+3 defense until end of turn'], [['boost', 'player', 'defense', +3]], 1],
-  [['Chocolate cookie', '+3 attack, +1 defense until end of turn'], [['boost', 'player', 'attack', +3], ['boost', 'player', 'defense', +1]], 0.7],
+  ['Sugar cookie#persistent#1', ['boost#player#attack#+3']],
+  ['Milk cookie#persistent#1', ['boost#player#defense#+3']],
+  /* [['Chocolate cookie', '+3 attack, +1 defense until end of turn'], [['boost', 'player', 'attack', +3], ['boost', 'player', 'defense', +1]], 0.7],
   [['Honey cookie', '+5 attack until end of turn'], [['boost', 'player', 'attack', +5]], 0.4],
   [['Void cookie', '+2 attack until end of fight'], [['patch', 'player', 'attack', +2]], 0.6],
   [['Lime cookie', '-3 monster attack until end of turn'], [['boost', 'monster', 'attack', -3]], 0.6],
@@ -17,7 +17,7 @@ const cookies = [
   [['Digestive biscuit', '+3 hp'], [['break', 'player', 'hp', +3]], 0.3],
   [['Charcoal biscuit', '+3 hp, -3 hp monster'], [['break', 'monster', 'hp', -3], ['break', 'player', 'hp', +3]], 0.2],
   [['Carrot cookie', '+1 cookie until end of fight'], [['patch', 'player', 'cookiesPerMove', +1], ['patch', 'player', 'getcookies', +1]], 0.3],
-  [['Butter cookie', '+5 attack, -1 cookie until end of fight'], [['patch', 'player', 'cookiesPerMove', -1], ['patch', 'player', 'getcookies', -1], ['patch', 'player', 'attack', +5]], 0.3],
+  [['Butter cookie', '+5 attack, -1 cookie until end of fight'], [['patch', 'player', 'cookiesPerMove', -1], ['patch', 'player', 'getcookies', -1], ['patch', 'player', 'attack', +5]], 0.3], */
 
 ];
 
@@ -45,22 +45,22 @@ const monsters = [
 
 // [[name, description], [[method, target, attribute, value],[...]], rarity]
 const spells = [
-  [['Knock out the weapon', '-10 player attack until end of turn'], [['boost', 'player', 'attack', -10]], 1],
-  [['Snow defense', '+2 monster defense until end of fight'], [['patch', 'monster', 'defense', +2]], 1],
-  [['Fury', '+2 monster attack until end of fight'], [['patch', 'monster', 'attack', +2]], 1],
+  ['Knock out the weapon##1', ['boost#player#attack#-10']],
+  ['Snow defense$##1', ['patch#monster#defense#+2']],
+  /* [['Fury', '+2 monster attack until end of fight'], [['patch', 'monster', 'attack', +2]], 1],
   [['Nature`s Call', '+0.1 monster resistance until end of fight'], [['patch', 'monster', 'resistance', +0.1]], 1],
   [['Old Curse', '-2 player attack until end of fight'], [['patch', 'player', 'attack', -2]], 1],
   [['Plague', '-0.2 player resistance until end of fight'], [['patch', 'player', 'resistance', -0.2]], 1],
   [['Unholy Strange', '+4 monster attack until end of fight'], [['patch', 'monster', 'attack', +5]], 0.8],
-  [['Steal Cookie', '-1 player cookie until end of fight'], [['patch', 'player', 'cookiesPerMove', -1], ['patch', 'player', 'getcookies', -1]], 0.8],
+  [['Steal Cookie', '-1 player cookie until end of fight'], [['patch', 'player', 'cookiesPerMove', -1], ['patch', 'player', 'getcookies', -1]], 0.8], */
 
 ];
 
 // [[name, description], [[method, target, attribute, value],[...]], rarity]
 const environments = [
-  [['Yellow Plane', 'Cold: -1 attack player'], [['patch', 'player', 'attack', -1]], 1],
-  [['Blue Swamp', 'Warm: +1 attack monster, +1 attack player'], [['patch', 'monster', 'attack', +1], ['patch', 'player', 'attack', +1]], 1],
-  [['Mountains', 'Fear: -1 cookie'], [['patch', 'player', 'cookiesPerMove', -1], ['patch', 'player', 'getcookies', -1]], 0.8],
+  ['Yellow Plane#Cold:#1', ['patch#player#attack#-1']],
+  ['Blue Swamp#Warm:#0.8'['patch#monster#attack#+1', 'patch#player#attack#+1']],
+  /* [['Mountains', 'Fear: -1 cookie'], [['patch', 'player', 'cookiesPerMove', -1], ['patch', 'player', 'getcookies', -1]], 0.8],
   [['Magic Forest', 'Joy: +1 defense player'], [['patch', 'player', 'defense', +1]], 1],
   [['Abandoned Village', 'Sadness: +0.1 resistance monster'], [['patch', 'monster', 'resistance', +0.1]], 1],
   [['Deep Cave', 'Dark: +2 attack monster, +0.1 resistance player'], [['patch', 'monster', 'attack', +2], ['patch', 'player', 'resistance', +0.1]], 1],
@@ -69,15 +69,15 @@ const environments = [
   [['Cemetery', 'Panic: -0.1 resistance player, -1 attack player'], [['patch', 'player', 'resistance', -0.1], ['patch', 'player', 'attack', -1]], 1],
   [['Derelict Camp', 'Sadness: +0.1 resistance monster'], [['patch', 'monster', 'resistance', +0.1]], 1],
   [['Lawn with a Fire', 'Warm: +1 attack monster, +1 attack player'], [['patch', 'monster', 'attack', +1], ['patch', 'player', 'attack', +1]], 1],
-  [['Smelly Lane', 'Disgust: -1 attack player, +1 defense monster'], [['patch', 'monster', 'defense', +1], ['patch', 'player', 'attack', -1]], 1],
+  [['Smelly Lane', 'Disgust: -1 attack player, +1 defense monster'], [['patch', 'monster', 'defense', +1], ['patch', 'player', 'attack', -1]], 1], */
 
 ];
 
 // [[name, description], [[method, target, attribute, value],[...]], rarity]
 const artefacts = [
-  [['Stick of the truth', '+1 player attack'], [['patch', 'player', 'attack', +1]], 1],
-  [['Ogre Belt', '+1 player defense'], [['patch', 'player', 'defense', +1]], 1],
-  [['Horseshoe', '+1 cookie'], [['patch', 'player', 'cookiesPerMove', +1], ['patch', 'player', 'getcookies', +1]], 0.7],
+  ['Stick of the truth#Applies at the level start#1', ['patch#player#attack#+1']],
+  ['Ogre Belt#Applies at the level start#1', ['patch#player#defense#+1']],
+  /* [['Horseshoe', '+1 cookie'], [['patch', 'player', 'cookiesPerMove', +1], ['patch', 'player', 'getcookies', +1]], 0.7],
   [['Staff of Humiliation', '-0.1 monster resistance'], [['patch', 'monster', 'resistance', -0.1]], 1],
   [['Sword of Justice', '+1 player attack, -0.1 monster resistance'], [['patch', 'player', 'attack', +1], ['patch', 'monster', 'resistance', -0.1]], 0.95],
   [['Rusty Blade', '-1 monster attack'], [['patch', 'monster', 'attack', -1]], 1],
@@ -87,14 +87,31 @@ const artefacts = [
   [['InsideOut Shirt', '-0.1 player resistance, +2 player attack'], [['patch', 'player', 'attack', +2], ['patch', 'player', 'resistance', -0.1]], 1],
   [['Mail of Fidelity', '+0.1 player resistance'], [['patch', 'player', 'resitance', +0.1]], 1],
   [['Dragon Eye', '+0.1 player resistance, +1 player attack, +1 player defense'], [['patch', 'player', 'defense', +1], ['patch', 'player', 'attack', +1], ['patch', 'player', 'resitance', +0.1]], 0.8],
-  [['Gobelet of Fire', '+1 player attack, +2 player defense'], [['patch', 'player', 'attack', +1], ['patch', 'player', 'defense', +2]], 0.8],
+  [['Gobelet of Fire', '+1 player attack, +2 player defense'], [['patch', 'player', 'attack', +1], ['patch', 'player', 'defense', +2]], 0.8], */
 
 ];
 
+const parse = (repository) => {
+  repository.map((e) => {
+    const [modSettings, modStrings] = e;
+    const [name, meta, rarity] = modSettings.split('#');
+    const modificators = modStrings.map(s => s.split('#'))
+      .map(([method, target, attribute, value]) => ({
+        method, target, attribute, value,
+      }));
+    return {
+      name,
+      meta,
+      rarity,
+      modificators,
+    };
+  });
+};
+
 export default {
-  cookies,
+  cookies: parse(cookies),
   monsters,
-  spells,
-  environments,
-  artefacts,
+  spells: parse(spells),
+  environments: parse(environments),
+  artefacts: parse(artefacts),
 };
