@@ -5,7 +5,7 @@ const cookies = [
   ['Milk cookie##1', ['boost#player#defense#+3']],
   ['Honey cookie##0.8', ['boost#player#attack#+5']],
   ['Ice cookie##0.8', ['boost#player#defense#+5']],
-  ['Chocolate cookie##0.8', ['boost#player#attack#+3, boost#player#defense#+2']],
+  ['Chocolate cookie##0.8', ['boost#player#attack#+3', 'boost#player#defense#+2']],
   ['Charcoal biscuit#Consumable:#0.2', ['break#monster#hp#-3', 'break#player#hp#+3']],
   ['Void cookie#Consumable:#0.4', ['patch#player#attack#+2']],
   ['Creamy cookie#Consumable:#0.4', ['patch#player#defense#+2']],
@@ -49,7 +49,7 @@ const monsters = [
 // [name#meta#rarity, [method#target#attribute#value, ...]]
 const spells = [
   ['Knock out the weapon##1', ['boost#player#attack#-10']],
-  ['Snow defense$##1', ['patch#monster#defense#+2']],
+  ['Snow defense##1', ['patch#monster#defense#+2']],
   ['Fury##1', ['patch#monster#attack#+3']],
   ['Nature`s Call##1', ['patch#monster#resistance#+0.1']],
   ['Old Curse##1', ['patch#player#attack#-2']],
