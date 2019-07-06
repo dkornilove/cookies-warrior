@@ -25,12 +25,14 @@ export default class Player extends Base {
           return {
             name: 'Attack',
             meta: '',
-            modificators: [{
-              method: 'break',
-              target: 'monster',
-              attribute: 'hp',
-              value: -value,
-            }],
+            modificators: [
+              {
+                method: 'break',
+                target: 'monster',
+                attribute: 'hp',
+                value: -value,
+              },
+            ],
           };
         },
         toString: res => `deal [${this.calcAttack(res)}] DMG`,
@@ -43,8 +45,7 @@ export default class Player extends Base {
   }
 
   getCookies() {
-    return [...new Array(this.getcookies < 0 ? 0 : this.getcookies)]
-      .map(() => pickRndValueFromArray(this.stageContainer));
+    return [...new Array(this.getcookies < 0 ? 0 : this.getcookies)].map(() => pickRndValueFromArray(this.stageContainer));
   }
 
   consumeCookie(name) {

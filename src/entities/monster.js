@@ -8,8 +8,9 @@ export default class Monster extends Base {
     this.attack = params.attack;
     this.defense = 0;
     this.defValue = prettifyValue(params.defense * multiplier);
-    this.resistance = prettifyValue(params.resistance + (-1 + multiplier / 2 < 0
-      ? 0 : -1 + multiplier / 2));
+    this.resistance = prettifyValue(
+      params.resistance + (-1 + multiplier / 2 < 0 ? 0 : -1 + multiplier / 2),
+    );
     this.spells = spells;
     this.boost = [];
     this.plans = {
@@ -20,12 +21,14 @@ export default class Monster extends Base {
           return {
             name: 'Attack',
             meta: '',
-            modificators: [{
-              method: 'break',
-              target: 'player',
-              attribute: 'hp',
-              value: -value,
-            }],
+            modificators: [
+              {
+                method: 'break',
+                target: 'player',
+                attribute: 'hp',
+                value: -value,
+              },
+            ],
           };
         },
         toString: res => `deal [${this.calcAttack(res)}] DMG`,
@@ -35,12 +38,14 @@ export default class Monster extends Base {
         getModifier: () => ({
           name: 'Block',
           meta: '',
-          modificators: [{
-            method: 'boost',
-            target: 'monster',
-            attribute: 'defense',
-            value: this.defValue,
-          }],
+          modificators: [
+            {
+              method: 'boost',
+              target: 'monster',
+              attribute: 'defense',
+              value: this.defValue,
+            },
+          ],
         }),
         toString: () => `defend with [+${this.defValue}]`,
       },
@@ -55,17 +60,11 @@ export default class Monster extends Base {
   setPlan() {
     const initRarity = Math.random();
     const plans = Object.keys(this.plans);
-
-    const setRecursively = () => {
-      const plan = pickRndValueFromArray(plans);
-      const planRarity = this.plans[plan].rarity;
-      if (planRarity >= initRarity) {
-        this.plan = plan;
-        return;
-      }
-      setRecursively();
-    };
-    setRecursively();
+    let nextPlan = pickRndValueFromArray(plans);
+    while (this.plans[nextPlan].rarity < initRarity) {
+      nextPlan = pickRndValueFromArray(plans);
+    }
+    this.plan = nextPlan;
   }
 
   getSpell() {

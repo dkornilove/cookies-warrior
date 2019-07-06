@@ -1,4 +1,3 @@
-// import _ from 'lodash';
 import entities from '../data/entities';
 import Player from './player';
 import Monster from './monster';
@@ -7,15 +6,11 @@ import Stage from './stage';
 const pickRandomEntity = (repository) => {
   const initRarity = Math.random();
   const data = entities[repository];
-  let entity;
-  const pickRecursively = () => {
+  let entity = data[Math.floor(Math.random() * data.length)];
+  while (entity.rarity < initRarity) {
     entity = data[Math.floor(Math.random() * data.length)];
-    if (entity.rarity >= initRarity) {
-      return entity;
-    }
-    return pickRecursively();
-  };
-  return pickRecursively();
+  }
+  return entity;
 };
 
 const createContainer = (repo, count) => {
